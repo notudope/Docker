@@ -3,7 +3,7 @@ Docker for [notubot](https://github.com/notudope/notubot) Userbot
 
 ## How to Use?
 ```
-docker pull notudope/notubot:groovy
+docker pull notudope/notubot:buster
 ```
 
 ## Build Status
