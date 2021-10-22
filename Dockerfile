@@ -1,6 +1,9 @@
 FROM python:3.9-slim-buster
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV LANG en_US.utf8
+ENV TZ=Asia/Jakarta
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ADD https://raw.githubusercontent.com/notudope/notubot/main/requirements.txt requirements.txt
 RUN set -ex \
@@ -34,6 +37,13 @@ RUN set -ex \
         wget \
         xz-utils \
         zip \
+        tini \
+        tzdata \
+        locales \
+        
+    # Reconfigure TZ
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
 
     # Install Google Chrome
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
@@ -69,7 +79,7 @@ RUN set -ex \
         build-essential \
         gnupg2 \
     && apt-get -qq -y clean \
-    && rm -rf -- /var/lib/apt/lists/* /var/cache/apt/archives/* /etc/apt/sources.list.d/*
+    && rm -rf -- /var/lib/apt/lists/* /var/cache/apt/archives/* /etc/apt/sources.list.d/* /usr/share/man/* /usr/share/doc/* /var/log/*
 
 EXPOSE 80 443
 
