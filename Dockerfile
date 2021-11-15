@@ -5,7 +5,6 @@ ENV LANG en_US.utf8
 ENV TZ=Asia/Jakarta
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ADD https://raw.githubusercontent.com/notudope/notubot/main/requirements.txt requirements.txt
 RUN set -ex \
     && apt-get -qq update \
     && apt-get -qq -y install --no-install-recommends \
@@ -58,10 +57,6 @@ RUN set -ex \
     && mv -f ~/chromedriver /usr/bin/chromedriver \
     && chown root:root /usr/bin/chromedriver \
     && chmod 0755 /usr/bin/chromedriver \
-
-    # Install Python modules
-    && pip3 install -r requirements.txt \
-    && rm requirements.txt \
 
     # Install RAR
     && mkdir -p /tmp/ \
